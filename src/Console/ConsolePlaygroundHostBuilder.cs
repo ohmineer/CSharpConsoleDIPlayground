@@ -9,8 +9,20 @@ using Serilog;
 
 namespace ConsoleDIPlayground;
 
+/// <summary>
+/// Configures and builds the host used in the project.
+/// </summary>
 public static class ConsolePlaygroundHostBuilder
 {
+  /// <summary>
+  /// Provides a method that configures and builds the Host used in this project.
+  /// </summary>
+  /// <remarks>
+  /// Loads information from settings files and environment variables. Adds logging and register services with
+  /// their appropriate lifetime.
+  /// </remarks>
+  /// <param name="args">Command line arguments passed when program is executed.</param>
+  /// <returns>An initialized IHost.</returns>
   public static IHost Build(string[] args)
   {
     Guard.Against.Null(args, nameof(args));
@@ -27,6 +39,11 @@ public static class ConsolePlaygroundHostBuilder
     return builder.Build();
   }
 
+  /// <summary>
+  /// Add configuration files and environment variables to the HostBuilder.
+  /// </summary>
+  /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
+  /// <param name="args">Command line arguments passed when program is executed.</param>
   private static void AddConfiguration(IHostBuilder hostBuilder, string[] args) =>
     hostBuilder.ConfigureAppConfiguration(builder =>
     {
@@ -44,6 +61,10 @@ public static class ConsolePlaygroundHostBuilder
         .AddCommandLine(args);
     });
 
+  /// <summary>
+  /// Sets logging features.
+  /// </summary>
+  /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
   private static void AddLogging(IHostBuilder hostBuilder) =>
     hostBuilder.ConfigureLogging((loggingBuilder) =>
       {
@@ -56,6 +77,10 @@ public static class ConsolePlaygroundHostBuilder
           .ReadFrom.Configuration(context.Configuration, "Logging");
       });
 
+  /// <summary>
+  /// Configures and validates options read from configuration files.
+  /// </summary>
+  /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
   private static void AddOptions(IHostBuilder hostBuilder) =>
     hostBuilder
       .UseDefaultServiceProvider(serviceProviderOptions =>
@@ -96,6 +121,10 @@ public static class ConsolePlaygroundHostBuilder
           .ValidateOnStart();
       });
 
+  /// <summary>
+  /// Registers concrete implementations of services used by the application.
+  /// </summary>
+  /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
   private static void AddServices(IHostBuilder hostBuilder) =>
     hostBuilder
       .ConfigureServices(services =>
