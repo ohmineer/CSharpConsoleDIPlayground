@@ -5,12 +5,7 @@ using Spectre.Console;
 
 using CancellationTokenSource cts = new();
 
-Console.CancelKeyPress += (_, e) =>
-{
-  cts.Cancel();
-  e.Cancel = true;
-};
-
+ConfigureCancellationOnUserRequest(cts);
 WriteTitle();
 
 using IHost host = ConsolePlaygroundHostBuilder.Build(args);
@@ -18,7 +13,10 @@ _ = host.RunAsync(cts.Token);
 
 try
 {
+  // A scope is required so that Runner class can use scoped lifetime services.
   await using AsyncServiceScope scope = host.Services.CreateAsyncScope();
+
+  // Main logic of the app is in "RunAsync" method of "Runner" instance.
   Runner runner = ActivatorUtilities.GetServiceOrCreateInstance<Runner>(scope.ServiceProvider);
   await runner.RunAsync(cts.Token);
 }
@@ -31,6 +29,25 @@ await host.StopAsync(cts.Token);
 WriteFarewell();
 await Task.Delay(500);
 
+// END of application.
+
+/// <summary>
+/// When user presses Ctrl + C, cancelation will be requested. Methods should be ready to take this
+/// request and throw a TaskCanceled exception that will stop the application.
+/// </summary>
+/// <param name="cts">Global/Shared cancellation source for stopping the app</param>
+static void ConfigureCancellationOnUserRequest(CancellationTokenSource cts)
+{
+  Console.CancelKeyPress += (_, e) =>
+  {
+    cts.Cancel();
+    e.Cancel = true;
+  };
+}
+
+/// <summary>
+/// Displays the title of the app when it is started
+/// </summary>
 static void WriteTitle()
 {
   Markup content = new Markup(
@@ -48,6 +65,10 @@ static void WriteTitle()
   AnsiConsole.Write(panel);
 }
 
+///
+/// <summary>
+///  Shows a "pretty" message indicating user has terminated the application.
+/// </summary>
 static void WriteFarewell()
 {
   Markup content = new Markup(
