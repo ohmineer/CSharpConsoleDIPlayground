@@ -3,6 +3,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace ConsoleDIPlayground;
 
+/// <summary>
+/// Provides the method <see cref="RunAsync"/> which contains the main logic of the application.
+/// </summary>
 public class Runner
 {
   private readonly IHostApplicationLifetime _hostLifeTime;
@@ -24,8 +27,16 @@ public class Runner
     _hostLifeTime.ApplicationStopped.Register(OnStopped);
   }
 
+  /// <summary>
+  /// Gets the ID of the <see cref="Runner"/> instance for debugging purposes.
+  /// </summary>
   public Guid Id { get; init; }
 
+  /// <summary>
+  /// Contains the main logic of the app.
+  /// </summary>
+  /// <param name="token">Token used to signal user wants to end the application.</param>
+  /// <returns>An awaitable task when infinite loop is canceled by user.</returns>
   public async Task RunAsync(CancellationToken token)
   {
     if (token.IsCancellationRequested)
@@ -37,6 +48,9 @@ public class Runner
     {
       try
       {
+        // This loop is just created to demonstrate how scoped services are instantiated everytime
+        // a new scope is created. This simple app probably does not need scopes but we just came to play 🔥🔥.
+        // GetForecastInCurrentLocationAsync method is called twice per scope created.
         await using AsyncServiceScope scope = _serviceProvider.CreateAsyncScope();
         _logger.LogDebug("------- Scope Begin -------");
         IForecastService forecastService =
@@ -53,10 +67,21 @@ public class Runner
     }
   }
 
+  /// <summary>
+  /// Performs actions when the hosted application starts through the <see cref="IHostApplicationLifetime"/> interface.
+  /// </summary>
   private void OnStarted() => _logger.LogDebug("{Name} with ID {Id} started", ToString(), Id);
 
+  /// <summary>
+  /// Performs actions when the hosted application stops through the <see cref="IHostApplicationLifetime"/> interface.
+  /// </summary>
   private void OnStopped() => _logger.LogDebug("{Name} with ID {Id} stopped", ToString(), Id);
 
+  /// <summary>
+  /// Performs the common operations needed when the application is stopped by the user.
+  /// </summary>
+  /// <param name="token">Token used to signal user wants to end the application.</param>
+  /// <returns>An awaitable task when infinite loop is canceled by user.</returns>
   private Task StopApplication(CancellationToken token)
   {
     _hostLifeTime.StopApplication();
