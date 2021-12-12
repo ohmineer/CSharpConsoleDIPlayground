@@ -1,4 +1,5 @@
 using ConsoleDIPlayground.Core;
+using ConsoleDIPlayground.Shared;
 using MediatR;
 
 namespace ConsoleDIPlayground.Infrastructure;

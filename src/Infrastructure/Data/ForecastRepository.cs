@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 using ConsoleDIPlayground.Core;
+using ConsoleDIPlayground.Shared;
 
 namespace ConsoleDIPlayground.Infrastructure;
 

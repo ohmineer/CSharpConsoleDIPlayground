@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Shared;
 
 public abstract class BaseService<T> : IBaseService where T : class
 {

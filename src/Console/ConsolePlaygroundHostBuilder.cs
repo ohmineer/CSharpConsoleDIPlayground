@@ -1,6 +1,7 @@
 using System.Reflection;
 using ConsoleDIPlayground.Core;
 using ConsoleDIPlayground.Infrastructure;
+using ConsoleDIPlayground.Shared;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

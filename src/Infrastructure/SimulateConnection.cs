@@ -1,3 +1,5 @@
+using ConsoleDIPlayground.Shared;
+
 namespace ConsoleDIPlayground.Infrastructure;
 
 public static class SimulateApiConnection

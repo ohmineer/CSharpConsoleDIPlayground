@@ -1,5 +1,6 @@
 using System.Text.Json;
 using ConsoleDIPlayground.Core;
+using ConsoleDIPlayground.Shared;
 using Nito.AsyncEx;
 
 namespace ConsoleDIPlayground.Infrastructure;

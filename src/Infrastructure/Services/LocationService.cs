@@ -1,4 +1,5 @@
 using ConsoleDIPlayground.Core;
+using ConsoleDIPlayground.Shared;
 using MediatR;
 using Microsoft.Extensions.Options;
 

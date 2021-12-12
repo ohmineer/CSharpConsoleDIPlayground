@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Shared;
 
 public static class StringExtensions
 {
