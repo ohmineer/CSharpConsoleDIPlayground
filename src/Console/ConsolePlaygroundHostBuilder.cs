@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Console;
 
 /// <summary>
 /// Configures and builds the host used in the project.

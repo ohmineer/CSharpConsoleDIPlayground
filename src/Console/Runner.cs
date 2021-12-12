@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Console;
 
 /// <summary>
 /// Provides the method <see cref="RunAsync"/> which contains the main logic of the application.

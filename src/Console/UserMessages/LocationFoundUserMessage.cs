@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Console;
 
 internal class LocationFoundUserMessage : IUserMessageComposer
 {

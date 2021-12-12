@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Console;
 
 public class ForecastUserMessage : IUserMessageComposer
 {
