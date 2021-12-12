@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Options;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public class LocationService : BaseService<LocationService>, ILocationService
 {

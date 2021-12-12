@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Nito.AsyncEx;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public class LocationRepository : ILocationRepository
 {

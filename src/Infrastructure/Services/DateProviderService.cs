@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public class DateProviderService : BaseService<DateProviderService>, IDateProviderService
 {

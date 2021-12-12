@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public sealed class ForecastRepository : IForecastRepository
 {

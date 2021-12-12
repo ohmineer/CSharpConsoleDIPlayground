@@ -1,3 +1,5 @@
+using ConsoleDIPlayground.Infrastructure;
+
 namespace ConsoleDIPlayground.Console;
 
 internal class LocationFoundUserMessage : IUserMessageComposer

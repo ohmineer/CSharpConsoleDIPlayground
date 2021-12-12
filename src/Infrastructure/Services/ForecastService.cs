@@ -1,7 +1,7 @@
 using MediatR;
 using Spectre.Console;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public class ForecastService : BaseService<ForecastService>, IForecastService
 {

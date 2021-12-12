@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 /// <summary>
 /// Returns a <see cref="IUserMessageComposer"/> based on the message type.

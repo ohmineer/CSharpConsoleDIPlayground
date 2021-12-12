@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public class CurrentWeatherUpdateHostedService : BackgroundService
 {

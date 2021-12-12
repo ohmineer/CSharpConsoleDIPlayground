@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Infrastructure;
 
 public interface IUserMessageComposer
 {
