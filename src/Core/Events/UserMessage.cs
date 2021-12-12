@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public class UserMessage : INotification
 {

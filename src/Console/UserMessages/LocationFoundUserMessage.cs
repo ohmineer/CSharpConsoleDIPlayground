@@ -1,3 +1,4 @@
+using ConsoleDIPlayground.Core;
 using ConsoleDIPlayground.Infrastructure;
 
 namespace ConsoleDIPlayground.Console;

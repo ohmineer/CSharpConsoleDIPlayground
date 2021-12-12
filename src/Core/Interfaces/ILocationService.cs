@@ -1,4 +1,4 @@
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public interface ILocationService : IBaseService
 {

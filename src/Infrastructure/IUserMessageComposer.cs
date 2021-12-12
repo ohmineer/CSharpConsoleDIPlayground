@@ -1,3 +1,5 @@
+using ConsoleDIPlayground.Core;
+
 namespace ConsoleDIPlayground.Infrastructure;
 
 public interface IUserMessageComposer

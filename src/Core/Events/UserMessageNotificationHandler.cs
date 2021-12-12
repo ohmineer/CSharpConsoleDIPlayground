@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Spectre.Console;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public class UserMessageNotificationHandler : INotificationHandler<UserMessage>
 {

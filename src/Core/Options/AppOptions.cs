@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public class AppOptions
 {

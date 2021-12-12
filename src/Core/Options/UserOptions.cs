@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public class UserOptions
 {

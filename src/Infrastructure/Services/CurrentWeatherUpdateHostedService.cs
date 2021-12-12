@@ -1,3 +1,4 @@
+using ConsoleDIPlayground.Core;
 using Microsoft.Extensions.Hosting;
 
 namespace ConsoleDIPlayground.Infrastructure;

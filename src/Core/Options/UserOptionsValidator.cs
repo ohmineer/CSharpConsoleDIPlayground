@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 
-namespace ConsoleDIPlayground;
+namespace ConsoleDIPlayground.Core;
 
 public class UserOptionsValidator : IValidateOptions<UserOptions>
 {

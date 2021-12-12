@@ -1,5 +1,5 @@
+using ConsoleDIPlayground.Core;
 using MediatR;
-using Spectre.Console;
 
 namespace ConsoleDIPlayground.Infrastructure;
 
