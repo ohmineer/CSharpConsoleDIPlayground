@@ -7,6 +7,7 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
 {
   private readonly IDateProviderService _dateProviderService;
   private readonly ILocationService _locationService;
+  private readonly UserMessageResolver _messageResolver;
   private readonly IForecastRepository _repository;
 
   public ForecastService(
@@ -14,12 +15,14 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
     IMediator mediator,
     ILocationService locationService,
     IForecastRepository repository,
-    IDateProviderService dateProviderService)
+    IDateProviderService dateProviderService,
+    UserMessageResolver messageResolver)
     : base(logger, mediator)
   {
     _repository = Guard.Against.Null(repository, nameof(repository));
     _locationService = Guard.Against.Null(locationService, nameof(locationService));
     _dateProviderService = Guard.Against.Null(dateProviderService, nameof(dateProviderService));
+    _messageResolver = Guard.Against.Null(messageResolver, nameof(messageResolver));
   }
 
   public async Task<Forecast> GetForecastAsync(Location? location, CancellationToken token)
@@ -31,20 +34,14 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
 
     await SimulateApiConnection.Connect(1000, token);
 
-    string currentDate = _dateProviderService.GetCurrentDate().ToShortDateString();
-
     Forecast forecastResponse =
       await _repository.GetCurrentForecastByCityName(location.City);
 
     Logger.LogInformation("Forecast retrieved {@Forecast}", forecastResponse);
 
+    IUserMessageComposer forecastRetrievedUserMessage = _messageResolver(UserMessageTypes.ForecastRetrieved);
     await Mediator.Publish(
-      new UserMessage(
-        $"Weather in [yellow]{forecastResponse.City}[/]: " +
-        $"🌡️[blue]{forecastResponse.TemperatureC} degC[/], " +
-        $"[blue]{forecastResponse.CurrentWeather}[/] {GetForecastEmoji(forecastResponse)} " +
-        $"(Updated 📆: [blue]{currentDate}[/])" +
-        $"{Environment.NewLine}"),
+      forecastRetrievedUserMessage.Compose(forecastResponse, _dateProviderService.GetCurrentDate()),
       token);
 
     return forecastResponse;
@@ -55,13 +52,4 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
     Location currentLocation = await _locationService.GetCurrentLocationAsync(token);
     return await GetForecastAsync(currentLocation, token);
   }
-
-  private static string GetForecastEmoji(Forecast forecastResponse) => forecastResponse.CurrentWeather switch
-  {
-    "Sunny" => "🌞🌞",
-    "Cloudy" => "☁️ ☁️",
-    "Rainy" => "🌧️ 🌧️",
-    "Windy" => " 🎏",
-    _ => string.Empty,
-  };
 }

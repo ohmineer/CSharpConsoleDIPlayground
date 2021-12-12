@@ -7,6 +7,7 @@ public class LocationService : BaseService<LocationService>, ILocationService
 {
   private readonly AppOptions? _appOptions;
   private readonly ILocationRepository _locationRepository;
+  private readonly UserMessageResolver _messageResolver;
   private readonly UserOptions? _userOptions;
 
   public LocationService(
@@ -14,10 +15,12 @@ public class LocationService : BaseService<LocationService>, ILocationService
     ILogger<LocationService> logger,
     IOptions<AppOptions> appOptions,
     IOptionsMonitor<UserOptions> userOptions,
-    ILocationRepository locationRepository)
+    ILocationRepository locationRepository,
+    UserMessageResolver messageResolver)
     : base(logger, mediator)
   {
     _locationRepository = Guard.Against.Null(locationRepository, nameof(locationRepository));
+    _messageResolver = Guard.Against.Null(messageResolver, nameof(messageResolver));
 
     if (!appOptions.TryGetOptions(out _appOptions, out IEnumerable<string>? failures))
     {
@@ -45,7 +48,8 @@ public class LocationService : BaseService<LocationService>, ILocationService
       _userOptions?.UserName,
       _userOptions?.ApiKey);
 
-    await Mediator.Publish(new UserMessage("🌍 [red]Getting current location...[/]    ", true), token);
+    IUserMessageComposer getLocationUserMessage = _messageResolver(UserMessageTypes.GetLocation);
+    await Mediator.Publish(getLocationUserMessage.Compose(), token);
 
     // Ideally this should be a connection to a GPS device from which coordinates are retrieved.
     // Then, a method call in location repository called GetLocationByCoordinates should be done.
@@ -55,8 +59,10 @@ public class LocationService : BaseService<LocationService>, ILocationService
       new Random().Next(0, await _locationRepository.GetLocationCount()));
 
     Logger.LogInformation("Current location: {@CurrentLocation}", location);
+
+    IUserMessageComposer locationFoundUserMessage = _messageResolver(UserMessageTypes.LocationFound);
     await Mediator.Publish(
-      new UserMessage($"[green]Current location found:[/] [yellow]{location.City}[/] 🌎"), token);
+      locationFoundUserMessage.Compose(location), token);
 
     return location;
   }

@@ -147,5 +147,20 @@ public static class ConsolePlaygroundHostBuilder
 
         services.AddTransient<Runner>();
         services.AddMediatR(Assembly.GetExecutingAssembly());
+
+        services.AddScoped<GetLocationUserMessage>();
+        services.AddScoped<ForecastUserMessage>();
+        services.AddScoped<LocationFoundUserMessage>();
+
+        services.AddScoped<UserMessageResolver>(serviceProvider => key =>
+        {
+          return key switch
+          {
+            UserMessageTypes.GetLocation => serviceProvider.GetRequiredService<GetLocationUserMessage>(),
+            UserMessageTypes.LocationFound => serviceProvider.GetRequiredService<LocationFoundUserMessage>(),
+            UserMessageTypes.ForecastRetrieved => serviceProvider.GetRequiredService<ForecastUserMessage>(),
+            _ => throw new KeyNotFoundException()
+          };
+        });
       });
 }
