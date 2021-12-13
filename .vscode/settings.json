@@ -12,6 +12,7 @@
   "conventionalCommits.scopes": [
     "gui",
     "infrastructure",
-    "core"
+    "core",
+    "shared"
   ]
 }

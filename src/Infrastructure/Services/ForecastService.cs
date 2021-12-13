@@ -8,7 +8,6 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
 {
   private readonly IDateProviderService _dateProviderService;
   private readonly ILocationService _locationService;
-  private readonly UserMessageResolver _messageResolver;
   private readonly IForecastRepository _repository;
 
   public ForecastService(
@@ -16,14 +15,12 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
     IMediator mediator,
     ILocationService locationService,
     IForecastRepository repository,
-    IDateProviderService dateProviderService,
-    UserMessageResolver messageResolver)
-    : base(logger, mediator)
+    IDateProviderService dateProviderService)
+      : base(logger, mediator)
   {
     _repository = Guard.Against.Null(repository, nameof(repository));
     _locationService = Guard.Against.Null(locationService, nameof(locationService));
     _dateProviderService = Guard.Against.Null(dateProviderService, nameof(dateProviderService));
-    _messageResolver = Guard.Against.Null(messageResolver, nameof(messageResolver));
   }
 
   public async Task<Forecast> GetForecastAsync(Location? location, CancellationToken token)
@@ -40,9 +37,8 @@ public class ForecastService : BaseService<ForecastService>, IForecastService
 
     Logger.LogInformation("Forecast retrieved {@Forecast}", forecastResponse);
 
-    IUserMessageComposer forecastRetrievedUserMessage = _messageResolver(UserMessageTypes.ForecastRetrieved);
     await Mediator.Publish(
-      forecastRetrievedUserMessage.Compose(forecastResponse, _dateProviderService.GetCurrentDate()),
+      new ForecastRetrievedEvent(this, _dateProviderService.GetCurrentDate(), forecastResponse),
       token);
 
     return forecastResponse;
