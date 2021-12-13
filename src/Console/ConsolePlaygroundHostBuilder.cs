@@ -152,14 +152,12 @@ public static class ConsolePlaygroundHostBuilder
         services.AddMediatR(Assembly.GetExecutingAssembly());
 
         services.AddScoped<GetLocationUserMessage>();
-        services.AddScoped<LocationFoundUserMessage>();
 
         services.AddScoped<UserMessageResolver>(serviceProvider => key =>
         {
           return key switch
           {
             UserMessageTypes.GetLocation => serviceProvider.GetRequiredService<GetLocationUserMessage>(),
-            UserMessageTypes.LocationFound => serviceProvider.GetRequiredService<LocationFoundUserMessage>(),
             _ => throw new KeyNotFoundException()
           };
         });
