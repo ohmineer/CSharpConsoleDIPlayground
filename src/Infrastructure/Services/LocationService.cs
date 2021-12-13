@@ -62,9 +62,7 @@ public class LocationService : BaseService<LocationService>, ILocationService
 
     Logger.LogInformation("Current location: {@CurrentLocation}", location);
 
-    IUserMessageComposer locationFoundUserMessage = _messageResolver(UserMessageTypes.LocationFound);
-    await Mediator.Publish(
-      locationFoundUserMessage.Compose(location), token);
+    await Mediator.Publish(new LocationFoundEvent(this, location), token);
 
     return location;
   }
