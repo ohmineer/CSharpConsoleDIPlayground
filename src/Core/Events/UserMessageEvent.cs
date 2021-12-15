@@ -2,9 +2,9 @@ using MediatR;
 
 namespace ConsoleDIPlayground.Core;
 
-public class UserMessage : INotification
+public class UserMessageEvent : INotification
 {
-  public UserMessage(string message, bool inline = false)
+  public UserMessageEvent(string message, bool inline = false)
   {
     Message = message;
     Inline = inline;

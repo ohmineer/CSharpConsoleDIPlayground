@@ -9,7 +9,6 @@ public class LocationService : BaseService<LocationService>, ILocationService
 {
   private readonly AppOptions? _appOptions;
   private readonly ILocationRepository _locationRepository;
-  private readonly UserMessageResolver _messageResolver;
   private readonly UserOptions? _userOptions;
 
   public LocationService(
@@ -17,21 +16,19 @@ public class LocationService : BaseService<LocationService>, ILocationService
     ILogger<LocationService> logger,
     IOptions<AppOptions> appOptions,
     IOptionsMonitor<UserOptions> userOptions,
-    ILocationRepository locationRepository,
-    UserMessageResolver messageResolver)
+    ILocationRepository locationRepository)
     : base(logger, mediator)
   {
     _locationRepository = Guard.Against.Null(locationRepository, nameof(locationRepository));
-    _messageResolver = Guard.Against.Null(messageResolver, nameof(messageResolver));
 
     if (!appOptions.TryGetOptions(out _appOptions, out IEnumerable<string>? failures))
     {
-      Mediator.Publish(new UserMessage(string.Join(" , ", failures)));
+      Mediator.Publish(new UserMessageEvent(string.Join(" , ", failures)));
     }
 
     if (!userOptions.TryGetOptions(out _userOptions, out failures))
     {
-      Mediator.Publish(new UserMessage(string.Join(" , ", failures)));
+      Mediator.Publish(new UserMessageEvent(string.Join(" , ", failures)));
     }
 
     Guard.Against.Null(_appOptions, nameof(appOptions));

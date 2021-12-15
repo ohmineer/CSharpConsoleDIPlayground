@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using ConsoleDIPlayground.Core;
+using MediatR;
 using Spectre.Console;
 
-namespace ConsoleDIPlayground.Core;
+namespace ConsoleDIPlayground.Console;
 
-public class UserMessageNotificationHandler : INotificationHandler<UserMessage>
+public class UserMessageEventHandler : INotificationHandler<UserMessageEvent>
 {
-  public Task Handle(UserMessage notification, CancellationToken cancellationToken)
+  public Task Handle(UserMessageEvent notification, CancellationToken cancellationToken)
   {
     if (!cancellationToken.IsCancellationRequested && !string.IsNullOrWhiteSpace(notification.Message))
     {

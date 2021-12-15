@@ -150,16 +150,5 @@ public static class ConsolePlaygroundHostBuilder
 
         services.AddTransient<Runner>();
         services.AddMediatR(Assembly.GetExecutingAssembly());
-
-        services.AddScoped<GetLocationUserMessage>();
-
-        services.AddScoped<UserMessageResolver>(serviceProvider => key =>
-        {
-          return key switch
-          {
-            UserMessageTypes.GetLocation => serviceProvider.GetRequiredService<GetLocationUserMessage>(),
-            _ => throw new KeyNotFoundException()
-          };
-        });
       });
 }
