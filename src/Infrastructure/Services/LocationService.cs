@@ -50,12 +50,22 @@ public class LocationService : BaseService<LocationService>, ILocationService
       _userOptions?.UserName,
       _userOptions?.ApiKey);
 
-    IUserMessageComposer getLocationUserMessage = _messageResolver(UserMessageTypes.GetLocation);
-    await Mediator.Publish(getLocationUserMessage.Compose(), token);
+    // EventHandler in Mediator displays a progress that stops once location "has been found".
+    // Strategy below allows canceling the task Mediator.Publish is running with both Ctrl + C and additional token.
+    // This token is cancelled on every request after API simulator does its job.
+    CancellationTokenSource mediatorCancellationSource = new();
+    var combinedCancellationSource =
+      CancellationTokenSource.CreateLinkedTokenSource(token, mediatorCancellationSource.Token);
+
+    Task mediatorTask = Mediator.Publish(new GettingLocationEvent(this), combinedCancellationSource.Token);
 
     // Ideally this should be a connection to a GPS device from which coordinates are retrieved.
     // Then, a method call in location repository called GetLocationByCoordinates should be done.
-    await SimulateApiConnection.Connect(1000, token);
+    await SimulateApiConnection.Connect(5000, token);
+    combinedCancellationSource.Cancel();
+    await mediatorTask;
+
+    combinedCancellationSource.Dispose();
 
     Location location = await _locationRepository.GetLocationByIndex(
       new Random().Next(0, await _locationRepository.GetLocationCount()));

@@ -28,6 +28,10 @@ catch (TaskCanceledException)
 }
 
 await host.StopAsync(cts.Token);
+
+// Not happy with this line. Need to understand how to know whether AnsiConsole is being used by another thread and
+// wait for its release in that case.
+await Task.Delay(500);
 WriteFarewell();
 await Task.Delay(500);
 
