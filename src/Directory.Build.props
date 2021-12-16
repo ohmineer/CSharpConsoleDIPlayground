@@ -1,0 +1,15 @@
+<Project>
+  <ItemGroup>
+    <Using Include="Ardalis.GuardClauses"/>
+    <Using Include="Microsoft.Extensions.Logging"/>
+    <Using Include="Microsoft.Extensions.Logging.Abstractions"/>
+    <!-- <Using Include="IncludeName" Alias="IncludeAlias" Static="True" /> -->
+  </ItemGroup>
+
+  <!--
+  <ItemGroup>
+    <PackageReference Include="Package.With.UnwantedNamespace" />
+    <Using Remove="UnwantedNamespace" />
+  </ItemGroup>
+  -->
+</Project>
