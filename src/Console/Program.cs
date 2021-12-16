@@ -8,6 +8,7 @@ using Spectre.Console;
 using CancellationTokenSource cts = new();
 
 ConfigureCancellationOnUserRequest(cts);
+SetDisplay();
 WriteTitle();
 
 using IHost host = ConsolePlaygroundHostBuilder.Build(args);
@@ -28,10 +29,6 @@ catch (TaskCanceledException)
 }
 
 await host.StopAsync(cts.Token);
-
-// Not happy with this line. Need to understand how to know whether AnsiConsole is being used by another thread and
-// wait for its release in that case.
-await Task.Delay(500);
 WriteFarewell();
 await Task.Delay(500);
 
@@ -52,7 +49,18 @@ static void ConfigureCancellationOnUserRequest(CancellationTokenSource cts)
 }
 
 /// <summary>
-/// Displays the title of the app when it is started
+/// Configures the display.
+/// </summary>
+static void SetDisplay()
+{
+  AnsiConsole.Reset();
+  AnsiConsole.Clear();
+  AnsiConsole.Profile.Width = 800;
+  AnsiConsole.Profile.Height = 600;
+}
+
+/// <summary>
+/// Displays the title of the app when it is started.
 /// </summary>
 static void WriteTitle()
 {

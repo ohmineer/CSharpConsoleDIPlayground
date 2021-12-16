@@ -1,4 +1,5 @@
 using ConsoleDIPlayground.Core;
+using ConsoleDIPlayground.Infrastructure;
 using ConsoleDIPlayground.Shared;
 using MediatR;
 using Spectre.Console;
@@ -14,37 +15,23 @@ public class GettingLocationEventHandler : INotificationHandler<GettingLocationE
     _logger = Guard.Against.Null(logger);
   }
 
-  public Task Handle(GettingLocationEvent notification, CancellationToken cancellationToken)
+  public async Task Handle(GettingLocationEvent notification, CancellationToken cancellationToken)
   {
     _logger.LogDebug("Event {@Event} received", notification);
 
     if (cancellationToken.IsCancellationRequested)
     {
       _logger.LogDebug("Cancellation requested by user");
-      return Task.CompletedTask;
+      return;
     }
 
-    AnsiConsole
+    await AnsiConsole
       .Status()
       .Spinner(Spinner.Known.BouncingBall)
       .StartAsync(
         "🌍 [red]Getting current location...[/]",
-        async _ =>
-        {
-          try
-          {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-              await Task.Delay(100, cancellationToken);
-            }
-          }
-          catch (TaskCanceledException)
-          {
-            _logger.LogDebug("Spinner cancelled");
-          }
-        });
+        async _ => await SimulateApiConnection.Connect(5000, cancellationToken));
 
     _logger.LogDebug("Event {@Event} successfully processed", notification);
-    return Task.CompletedTask;
   }
 }
