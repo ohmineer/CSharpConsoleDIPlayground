@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- References to nuget packages -->
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="AsyncFixer" Version="1.5.1">
@@ -39,6 +40,7 @@
     </PackageReference>
   </ItemGroup>
 
+  <!-- Files and folders to copy to output directory -->
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -48,11 +50,15 @@
     </Content>
   </ItemGroup>
 
+  <!-- Project properties -->
   <PropertyGroup>
     <ApplicationIcon>Resources\icons8-weather.ico</ApplicationIcon>
     <Product>WeatherForecastSimulator</Product>
     <AssemblyTitle>WeatherForecastSimulator.Console</AssemblyTitle>
     <Copyright>Personal Use Only</Copyright>
+    <AssemblyVersion>Injected by nbgv</AssemblyVersion>
+    <FileVersion>Injected by nbgv</FileVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
 
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>

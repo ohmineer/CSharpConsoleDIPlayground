@@ -1,11 +1,16 @@
-<Project>
+<Project ToolsVersion="Current">
+  <!-- Merges this build with solution-wide Directory.Build.props -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Implicit usings for all files in the project  -->
   <ItemGroup>
-    <Using Include="Ardalis.GuardClauses"/>
-    <Using Include="Microsoft.Extensions.Logging"/>
-    <Using Include="Microsoft.Extensions.Logging.Abstractions"/>
+    <Using Include="Ardalis.GuardClauses" />
+    <Using Include="Microsoft.Extensions.Logging" />
+    <Using Include="Microsoft.Extensions.Logging.Abstractions" />
     <!-- <Using Include="IncludeName" Alias="IncludeAlias" Static="True" /> -->
   </ItemGroup>
 
+  <!-- Remove unwanted implicit usings from external libraries -->
   <!--
   <ItemGroup>
     <PackageReference Include="Package.With.UnwantedNamespace" />
