@@ -66,7 +66,10 @@ static void WriteTitle()
 {
   Markup content = new Markup(
     "\n[bold yellow on black]WEATHER FORECAST SERVICE SIMULATOR[/]\n\n" +
-    "[blue]A .Net 6.0 console app to learn about dependency injection[/]").Centered();
+    "[blue]A .Net 6.0 console app to learn about dependency injection[/]\n\n" +
+    $"[bold]Version:[/] [red]{ThisAssembly.AssemblyFileVersion}[/]    " +
+    $"[bold]Date:[/] [red]{ThisAssembly.GitCommitDate.ToShortDateString()}[/]")
+    .Centered();
 
   Panel panel = new(content)
   {
