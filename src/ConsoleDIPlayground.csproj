@@ -49,11 +49,15 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <ApplicationIcon>Resources\icons8-weather.ico</ApplicationIcon>
+    <Product>WeatherForecastSimulator</Product>
+    <AssemblyTitle>WeatherForecastSimulator.Console</AssemblyTitle>
+    <Copyright>Personal Use Only</Copyright>
+
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>bd63a892-7926-4c63-9425-678abb32fc50</UserSecretsId>
   </PropertyGroup>
-
 </Project>
