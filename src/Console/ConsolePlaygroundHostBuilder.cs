@@ -138,7 +138,7 @@ public static class ConsolePlaygroundHostBuilder
 
           return LocationRepository.Initialize(
             loggerService,
-            new CancellationTokenSource().Token);
+            CancellationToken.None);
         });
 
         services.AddSingleton<IForecastRepository, ForecastRepository>();
