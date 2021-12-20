@@ -57,6 +57,7 @@ Get-ChildItem $DirectoryPath -Recurse | ForEach-Object {
 
 dotnet publish -c $Configuration --nologo `
   -r $Target --self-contained $IsSelfContained `
-  -p:PublishSingleFile=$IsSingleFile
+  -p:PublishSingleFile=$IsSingleFile `
+  -p:PublicRelease=true
 
 Invoke-Item "$($DirectoryPath)/publish"
