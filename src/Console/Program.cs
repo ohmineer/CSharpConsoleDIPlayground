@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Spectre.Console;
 
 SetDisplay();
-WriteTitle();
+DisplayTitle();
 
 IHost? host = default;
 CancellationTokenSource cancellationTokenSource = new();
@@ -44,7 +44,7 @@ finally
     await disposableHost.DisposeAsync().ConfigureAwait(false);
   }
 
-  WriteFarewell();
+  DisplayFarewell();
   await Task.Delay(500);
 }
 
@@ -78,7 +78,7 @@ static void SetDisplay()
 /// <summary>
 /// Displays the title of the app when it is started.
 /// </summary>
-static void WriteTitle()
+static void DisplayTitle()
 {
   Markup content = new Markup(
     "\n[bold yellow on black]WEATHER FORECAST SERVICE SIMULATOR[/]\n\n" +
@@ -102,10 +102,10 @@ static void WriteTitle()
 /// <summary>
 ///  Shows a "pretty" message indicating user has terminated the application.
 /// </summary>
-static void WriteFarewell()
+static void DisplayFarewell()
 {
   Markup content = new Markup(
-    "[yellow]See you next time![/]".PadCenter(100)).Centered();
+    "[yellow]See you next time![/]".PadCenter(70)).Centered();
 
   Panel panel = new(content)
   {
