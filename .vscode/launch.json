@@ -2,6 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "PowerShell Launch Script",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/release.ps1",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        // "-NextVersion",
+        // "10.0",
+        // "-VersionIncrement",
+        // "Major",
+        "-PushRemote"
+      ]
+    },
+    {
       // Use IntelliSense to find out which attributes exist for C# debugging
       // Use hover for the description of the existing attributes
       // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
