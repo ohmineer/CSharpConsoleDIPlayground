@@ -35,16 +35,16 @@ $DirectoryPath = "**/bin/$($Configuration)/**/$($Target)"
 $IsSingleFile = $false
 $IsSelfContained = $false
 
-if ($Help) {
+if ($Help.IsPresent) {
   Get-Help $PSCommandPath
   exit 0
 }
 
-if ($SelfContained) {
+if ($SelfContained.IsPresent) {
   $IsSelfContained = $true
 }
 
-if (($SingleFile) -and ($IsSelfContained)) {
+if (($SingleFile.IsPresent) -and ($IsSelfContained)) {
   $IsSingleFile = $true
 }
 
@@ -60,4 +60,5 @@ dotnet publish -c $Configuration --nologo `
   -p:PublishSingleFile=$IsSingleFile `
   -p:PublicRelease=true
 
+# Opens the folder where app has been just published
 Invoke-Item "$($DirectoryPath)/publish"
