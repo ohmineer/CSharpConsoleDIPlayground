@@ -1,13 +1,14 @@
 [CmdletBinding()]
 param(
   [switch]$Help,
+  [switch]$PushRemote,
   [Parameter()][ValidateSet('Major', 'Minor')][string]$VersionIncrement = 'Minor'
 )
 
 Set-StrictMode -Version 2
 $ErrorActionPreference = 'Stop'
 
-if ($Help) {
+if ($Help.IsPresent) {
   Get-Help $PSCommandPath
   exit 0
 }
@@ -20,7 +21,7 @@ $version = nbgv prepare-release --versionIncrement $VersionIncrement --format js
 # Create a tag for the new branch in both local repo and origin.
 $tag = nbgv tag $version.NewBranch.Commit
 # Push everything to remote if it exists
-if (git ls-remote --exit-code origin) {
+if ((git ls-remote --exit-code origin) -and ($PushRemote.IsPresent)) {
   git push origin
 
   $matchResult = $tag -match $tagPattern
