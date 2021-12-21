@@ -1,36 +1,52 @@
-﻿using ConsoleDIPlayground;
-using ConsoleDIPlayground.Console;
+﻿using ConsoleDIPlayground.Console;
 using ConsoleDIPlayground.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spectre.Console;
 
-using CancellationTokenSource cts = new();
-
-ConfigureCancellationOnUserRequest(cts);
 SetDisplay();
 WriteTitle();
 
-using IHost host = ConsolePlaygroundHostBuilder.Build(args);
-_ = host.RunAsync(cts.Token);
+IHost? host = default;
+CancellationTokenSource cancellationTokenSource = new();
+CancellationToken cancellationToken = cancellationTokenSource.Token;
+ConfigureCancellationOnUserRequest(cancellationTokenSource);
 
 try
 {
-  // A scope is required so that Runner class can use scoped lifetime services.
-  await using AsyncServiceScope scope = host.Services.CreateAsyncScope();
+  host = ConsolePlaygroundHostBuilder.Build(args);
+  await host.StartAsync(cancellationToken).ConfigureAwait(false);
 
-  // Main logic of the app is in "RunAsync" method of "Runner" instance.
-  Runner runner = ActivatorUtilities.GetServiceOrCreateInstance<Runner>(scope.ServiceProvider);
-  await runner.RunAsync(cts.Token);
+  // A scope is required so that Runner class can use scoped lifetime services.
+  await using (AsyncServiceScope scope = host.Services.CreateAsyncScope())
+  {
+    // Main logic of the app is in "RunAsync" method of "Runner" instance.
+    Runner runner = ActivatorUtilities.GetServiceOrCreateInstance<Runner>(scope.ServiceProvider);
+    await runner.RunAsync(cancellationToken).ConfigureAwait(false);
+  }
+
+  await host.WaitForShutdownAsync(cancellationToken).ConfigureAwait(false);
 }
 catch (TaskCanceledException)
 {
   AnsiConsole.Write("\n\n");
 }
+catch (Exception ex)
+{
+  AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
+}
+finally
+{
+  cancellationTokenSource?.Dispose();
 
-await host.StopAsync(cts.Token);
-WriteFarewell();
-await Task.Delay(500);
+  if (host is IAsyncDisposable disposableHost)
+  {
+    await disposableHost.DisposeAsync().ConfigureAwait(false);
+  }
+
+  WriteFarewell();
+  await Task.Delay(500);
+}
 
 // END of application.
 
@@ -38,12 +54,12 @@ await Task.Delay(500);
 /// When user presses Ctrl + C, cancelation will be requested. Methods should be ready to take this
 /// request and throw a TaskCanceled exception that will stop the application.
 /// </summary>
-/// <param name="cts">Global/Shared cancellation source for stopping the app</param>
-static void ConfigureCancellationOnUserRequest(CancellationTokenSource cts)
+/// <param name="cancellationTokenSource">Global/Shared cancellation source for stopping the app</param>
+static void ConfigureCancellationOnUserRequest(CancellationTokenSource cancellationTokenSource)
 {
   Console.CancelKeyPress += (_, e) =>
   {
-    cts.Cancel();
+    cancellationTokenSource.Cancel();
     e.Cancel = true;
   };
 }
